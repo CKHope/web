@@ -6,35 +6,5 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
   </head>
-  <body>
-    <div>
-      <img id="img" src="im1.jpg" />
-      <button id="btn">Copy</button>
-    </div>
-
-    <script>
-      const imgEl = document.getElementById("img");
-      const btnEl = document.getElementById("btn");
-
-      btnEl.addEventListener("click", () => {
-        copyToClipboard(imgEl.src);
-      });
-
-      async function copyToClipboard(src) {
-        const data = await fetch(src);
-        const blob = await data.blob();
-
-        try {
-          await navigator.clipboard.write([
-            new ClipboardItem({
-              [blob.type]: blob,
-            }),
-          ]);
-          console.log("Success");
-        } catch (e) {
-          console.log(e);
-        }
-      }
-    </script>
-  </body>
+  <body></body>
 </html>

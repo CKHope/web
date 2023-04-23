@@ -1,15 +1,52 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Random Text Generator</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>Random Text and Image Generator</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .output {
+        margin-top: 20px;
+        border: 1px solid #ccc;
+        padding: 20px;
+      }
+
+      .output img {
+        max-width: 100%;
+      }
+
+      .btn {
+        display: inline-block;
+        margin-right: 10px;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+      }
+    </style>
   </head>
   <body>
     <div class="container">
-      <h1>Random Text Generator</h1>
-      <p id="randomText"></p>
-      <button id="generateBtn">Generate Random Text</button>
+      <h1>Random Text and Image Generator</h1>
+      <div class="output">
+        <p id="randomText"></p>
+        <img id="randomImage" src="" alt="" />
+      </div>
+      <button id="generateTextBtn" class="btn">Generate Random Text</button>
+      <button id="generateImageBtn" class="btn">Generate Random Image</button>
     </div>
-    <script src="script.js"></script>
+
+    <script src="script.js">
+      // JavaScript code here
+    </script>
   </body>
 </html>

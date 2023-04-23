@@ -79,7 +79,7 @@
       async function copyToClipboard(src) {
         // const data = await fetch(src);
         // const blob = await data.blob();
-        const image = await writeToCanvas(src);
+        const blob = await writeToCanvas(src);
 
         try {
           await navigator.clipboard.write([

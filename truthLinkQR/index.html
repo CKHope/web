@@ -62,9 +62,24 @@
         copyToClipboard(imgEl.src);
       });
 
+      function writeToCanvas(src) {
+        return new Promise((res, rej) => {
+          img.src = src;
+          img.onload = function () {
+            canvas.width = img.naturalWidth;
+            canvas.height = img.naturalHeight;
+            ctx.drawImage(img, 0, 0);
+            canvas.toBlob((blob) => {
+              res(blob);
+            }, "image/png");
+          };
+        });
+      }
+
       async function copyToClipboard(src) {
-        const data = await fetch(src);
-        const blob = await data.blob();
+        // const data = await fetch(src);
+        // const blob = await data.blob();
+        const image = await writeToCanvas(src);
 
         try {
           await navigator.clipboard.write([

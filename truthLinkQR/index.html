@@ -55,11 +55,22 @@
     </div>
 
     <script>
+      // Array of image file names
+      var images = ["im1.jpg", "im2.jpg", "im3.jpg", "im4.png"];
+
+      // Function to generate a random image URL
+      function generateRandomImageURL() {
+        var randomIndex = Math.floor(Math.random() * images.length);
+        return images[randomIndex];
+      }
+
       const imgEl = document.getElementById("img");
       const btnEl = document.getElementById("btn");
 
       btnEl.addEventListener("click", () => {
-        copyToClipboard(imgEl.src);
+        const imgSource = generateRandomImageURL();
+        // copyToClipboard(imgEl.src);
+        copyToClipboard(imgSource);
       });
 
       function writeToCanvas(src) {

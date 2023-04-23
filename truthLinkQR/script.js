@@ -34,32 +34,49 @@ document
   });
 
 // Add event listener to generate image button
+// Array of image file names
+var images = ["im1.jpg", "im2.jpg", "im3.jpg"];
+
+// Function to generate a random image URL
+function generateRandomImageURL() {
+  var randomIndex = Math.floor(Math.random() * images.length);
+  return images[randomIndex];
+}
+
+// Function to copy text to clipboard
+function copyToClipboard(text) {
+  var textArea = document.createElement("textarea");
+  textArea.value = text;
+  document.body.appendChild(textArea);
+  textArea.select();
+  document.execCommand("copy");
+  document.body.removeChild(textArea);
+}
+
+// Button click event handler for "Generate Random Image" button
 document
   .getElementById("generateImageBtn")
   .addEventListener("click", function () {
-    // Array of local image filenames
-    var imageArray = ["im1.jpg", "im2.jpg", "im3.jpg"];
-    var randomImage = getRandomArrayItem(imageArray);
+    // Generate random image URL
+    var imageURL = generateRandomImageURL();
 
-    // Copy generated image to clipboard
-    var imgElement = new Image();
-    imgElement.src = randomImage;
-    imgElement.onload = function () {
+    // Create temporary image element
+    var tempImg = document.createElement("img");
+    tempImg.src = imageURL;
+
+    // Load image to get data URL
+    tempImg.onload = function () {
+      // Convert image to data URL
       var canvas = document.createElement("canvas");
-      canvas.width = imgElement.width;
-      canvas.height = imgElement.height;
       var ctx = canvas.getContext("2d");
-      ctx.drawImage(imgElement, 0, 0);
-      canvas.toBlob(function (blob) {
-        navigator.clipboard
-          .write([new ClipboardItem({ "image/jpeg": blob })])
-          .then(function () {
-            console.log("Random image copied to clipboard:", randomImage);
-            alert("Random image copied to clipboard:\n\n" + randomImage);
-          })
-          .catch(function (error) {
-            console.error("Failed to copy image to clipboard:", error);
-          });
-      }, "image/jpeg");
+      ctx.drawImage(tempImg, 0, 0);
+      var dataURL = canvas.toDataURL();
+
+      // Copy data URL to clipboard
+      copyToClipboard(dataURL);
+
+      // Update image source and display success message
+      document.getElementById("randomImage").src = imageURL;
+      alert("Random image copied to clipboard!");
     };
   });

@@ -70,6 +70,7 @@
       btnEl.addEventListener("click", () => {
         const imgSource = generateRandomImageURL();
         // copyToClipboard(imgEl.src);
+        imgEl.src = imgSource;
         copyToClipboard(imgSource);
       });
 

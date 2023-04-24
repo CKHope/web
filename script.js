@@ -35,7 +35,7 @@ document
 
 // Add event listener to generate image button
 // Array of image file names
-var images = ["im1.jpg", "im2.jpg", "im3.jpg"];
+var images = ["im01/im1.jpg", "im01/im2.jpg", "im02/im3.jpg", "im02/im4.png"];
 
 // Function to generate a random image URL
 function generateRandomImageURL() {
@@ -43,40 +43,54 @@ function generateRandomImageURL() {
   return images[randomIndex];
 }
 
-// Function to copy text to clipboard
-function copyToClipboard(text) {
-  var textArea = document.createElement("textarea");
-  textArea.value = text;
-  document.body.appendChild(textArea);
-  textArea.select();
-  document.execCommand("copy");
-  document.body.removeChild(textArea);
+function writeToCanvas(src) {
+  return new Promise((res) => {
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    const img = new Image();
+    img.src = src;
+
+    img.onload = function () {
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      ctx.drawImage(img, 0, 0);
+      canvas.toBlob((blob) => {
+        res(blob);
+      }, "image/png");
+    };
+  });
+}
+
+async function copyToClipboard(src) {
+  // const data = await fetch(src);
+  // const blob = await data.blob();
+  const blob = await writeToCanvas(src);
+
+  try {
+    await navigator.clipboard.write([
+      new ClipboardItem({
+        [blob.type]: blob,
+      }),
+    ]);
+    console.log("Success");
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 // Button click event handler for "Generate Random Image" button
-document
-  .getElementById("generateImageBtn")
-  .addEventListener("click", function () {
-    // Generate random image URL
-    var imageURL = generateRandomImageURL();
+document.getElementById("generateImageBtn").addEventListener("click", () => {
+  // Generate random image URL
+  var imageURL = generateRandomImageURL();
 
-    // Create temporary image element
-    var tempImg = document.createElement("img");
-    tempImg.src = imageURL;
+  // Create temporary image element
+  var tempImg = document.createElement("img");
+  tempImg.src = imageURL;
 
-    // Load image to get data URL
-    tempImg.onload = function () {
-      // Convert image to data URL
-      var canvas = document.createElement("canvas");
-      var ctx = canvas.getContext("2d");
-      ctx.drawImage(tempImg, 0, 0);
-      var dataURL = canvas.toDataURL();
+  // Copy data URL to clipboard
+  copyToClipboard(imageURL);
 
-      // Copy data URL to clipboard
-      copyToClipboard(dataURL);
-
-      // Update image source and display success message
-      document.getElementById("randomImage").src = imageURL;
-      alert("Random image copied to clipboard!");
-    };
-  });
+  // Update image source and display success message
+  document.getElementById("randomImage").src = imageURL;
+  alert("Random image copied to clipboard!");
+});

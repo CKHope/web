@@ -92,5 +92,5 @@ document.getElementById("generateImageBtn").addEventListener("click", () => {
 
   // Update image source and display success message
   document.getElementById("randomImage").src = imageURL;
-  alert("Random image copied to clipboard!");
+  alert(`Random image copied to clipboard! ${imageURL}`);
 });
